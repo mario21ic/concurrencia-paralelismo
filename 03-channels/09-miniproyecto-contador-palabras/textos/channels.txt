@@ -1,0 +1,4 @@
+Un channel es un conducto tipado por el que las goroutines envían y reciben valores.
+Un channel sin buffer sincroniza al emisor y al receptor. Un channel con buffer permite
+que el emisor avance hasta llenar el buffer. Quien envía es quien cierra el channel.
+Recibir de un channel cerrado devuelve el valor cero y no bloquea.

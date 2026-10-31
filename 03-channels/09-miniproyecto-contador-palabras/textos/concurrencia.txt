@@ -1,0 +1,4 @@
+La concurrencia es la composición de tareas independientes. El paralelismo es la ejecución
+simultánea de varias tareas. La concurrencia habilita el paralelismo, pero la concurrencia
+no garantiza el paralelismo. Un programa concurrente bien diseñado puede ejecutarse en un
+solo núcleo o en muchos núcleos sin cambiar su estructura.

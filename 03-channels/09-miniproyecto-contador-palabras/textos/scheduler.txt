@@ -1,0 +1,4 @@
+El scheduler de Go multiplexa muchas goroutines sobre pocos hilos del sistema operativo.
+Cada procesador lógico tiene una cola de goroutines listas. Si una cola se vacía, el procesador
+roba trabajo de otra cola. Así las goroutines se reparten entre los núcleos disponibles
+y el programa aprovecha el paralelismo cuando existe.

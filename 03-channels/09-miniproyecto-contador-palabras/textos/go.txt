@@ -1,0 +1,4 @@
+Go es un lenguaje de programación compilado y de tipado estático. Go fue diseñado en Google
+para que programar sistemas concurrentes sea simple. En Go la concurrencia es parte del lenguaje:
+las goroutines son baratas y los channels permiten que las goroutines se comuniquen entre sí.
+No compartas memoria para comunicarte; comunica para compartir memoria.
