@@ -4,7 +4,7 @@ Curso autodidacta de **Concurrencia y Paralelismo en Go 1.26**, en español. Cad
 
 ## Estado actual
 
-Los módulos **01 a 15 están implementados**, cada uno con `README.md` de módulo y `README.md` por ejercicio.
+Los módulos **01 a 15 y el proyecto final (`proyecto-final/`) están implementados**, cada módulo con `README.md` de módulo y `README.md` por ejercicio.
 
 | Módulos | Tema |
 |--|--|
@@ -16,8 +16,6 @@ Los módulos **01 a 15 están implementados**, cada uno con `README.md` de módu
 | 15 | diseño avanzado (deadlock, clásicos, estructuras, lock-free, APIs, HTTP, `database/sql`) |
 
 **Pendiente / ideas** (no es obligatorio hacerlo sin que lo pidan):
-- La sección «Estructura sugerida del repositorio» del `README.md` raíz está **desactualizada** (lista `04-select-context`, `09-rendimiento`, `10-avanzado`…; los nombres reales son los de las carpetas actuales).
-- `proyectos/` y el «Proyecto final» del sílabo no existen todavía.
 - `14-internals/06-canales-y-select`, sección F: la línea del channel `nil` nunca se imprime porque nunca se elige (es lo esperado, pero el mensaje podría mostrar «nil: 0 veces»).
 
 ## Entorno
@@ -93,3 +91,15 @@ cd 15-diseno-avanzado/07-skiplist && go run .      # cada ejercicio es `package 
 - Idioma de trabajo: **español**.
 - Ritmo habitual: se pide «implementa el módulo N» y se espera código + tests + README por ejercicio + README del módulo, todo verificado.
 - Si una ejecución tarda mucho o se interrumpe (p. ej. reinicio del equipo), revisa qué carpetas están vacías o sin README antes de rehacer nada: ya pasó con el módulo 14 (los submódulos 06-08 quedaron vacíos).
+
+## Proyecto final (`proyecto-final/`)
+
+`jobq`: cola de trabajos distribuida (coordinador + workers + loadgen), opción 2 del sílabo. Lee `proyecto-final/README.md` (decisiones de diseño, API, resultados medidos) antes de tocarlo.
+
+- Paquetes: `internal/{modelo,planificador,api,worker}` y `cmd/{coordinador,worker,loadgen}`. El **corazón** es `internal/planificador` (un `Mutex`, 4 colas FIFO por prioridad con envejecimiento, línea de tiempo `min-heap` con invalidación por generación, `Run(ctx)` como reloj).
+- Tests: `cd proyecto-final && make test` (`go vet` + `go test -race`). El planificador se prueba con `synctest` (backoff y caducidad exactos); `api` y `worker` con `httptest` y tiempo real corto.
+- Docker: el contexto de build es la **raíz del repo** (allí está `go.mod`): `docker compose -f proyecto-final/compose.yaml …` o desde `proyecto-final/`: `docker compose up -d --build`. Hay un `.dockerignore` en la raíz que solo deja pasar `go.mod`, `go.sum` y `proyecto-final/`.
+- **Trampa de Compose:** `docker compose run` vuelve a evaluar la configuración y **recrea el coordinador** si cambió una variable. Si pruebas `CAPACIDAD=100`, expórtala para *todos* los comandos (`export CAPACIDAD=100`), o el coordinador vuelve a los valores por defecto.
+- **Trampa de GOMAXPROCS:** con `cpus: 1.0` Go fija `GOMAXPROCS=2` (el mínimo del runtime), no 1.
+- Escalado medido con `./scripts/escalado.sh`; deja `docker compose down` al terminar.
+- No cambies cifras del README sin volver a ejecutar el experimento correspondiente.

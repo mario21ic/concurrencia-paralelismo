@@ -11,20 +11,12 @@ Curso autodidacta de nivel básico a avanzado. Cada módulo incluye objetivos, t
 ```
 .
 ├── README.md
-├── 01-fundamentos/
-├── 02-goroutines/
-├── 03-channels/
-├── 04-select-context/
-├── 05-sync/
-├── 06-patrones/
-├── 07-errores-cancelacion/
-├── 08-testing/
-├── 09-rendimiento/
-├── 10-avanzado/
-└── proyectos/
+├── AGENTS.md                  # guía para trabajar en el repo (convenciones, trampas, estado)
+├── 01-fundamentos/ … 15-diseno-avanzado/   # un módulo por carpeta, cada ejercicio con su README
+└── proyecto-final/            # jobq: cola de trabajos distribuida (Docker Compose)
 ```
 
-Cada carpeta con su propio `main.go` / `*_test.go`. Ejecuta **siempre** con `-race` mientras aprendes:
+Cada ejercicio con su propio `main.go` / `*_test.go` y su `README.md`. Ejecuta **siempre** con `-race` mientras aprendes:
 
 ```bash
 go run -race .

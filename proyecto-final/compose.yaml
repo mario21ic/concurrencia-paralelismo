@@ -1,0 +1,64 @@
+# Sistema distribuido: 1 coordinador + N workers (réplicas) + generador de carga (perfil "carga").
+#
+#   docker compose up -d --build                    # coordinador + 2 workers
+#   docker compose up -d --scale worker=4           # escalar a 4 workers
+#   docker compose run --rm loadgen                 # lanzar carga (perfil "carga")
+#   docker compose down
+#
+# Cada worker tiene un límite de 1 CPU: GOMAXPROCS (consciente de cgroups desde Go 1.25) vale 1 en cada
+# contenedor, así que el paralelismo viene de AÑADIR contenedores, no de goroutines dentro de uno.
+name: jobq
+
+x-imagen: &imagen
+  build:
+    context: ..
+    dockerfile: proyecto-final/Dockerfile
+  image: jobq:latest
+
+services:
+  coordinador:
+    <<: *imagen
+    command: ["/app/coordinador"]
+    ports:
+      - "8080:8080"     # API, /metrics, /debug/pprof
+    environment:
+      ADDR: ":8080"
+      CAPACIDAD: "${CAPACIDAD:-50000}"       # contrapresión: más allá, el envío recibe 503
+      ENVEJECIMIENTO: "5s"     # +1 nivel de prioridad cada 5 s de espera
+      ARRIENDO_TTL: "10s"
+      TASA_TENANT: "${TASA_TENANT:-0}"         # envíos/s por tenant (0 = sin límite)
+      LOG_CADA: "5s"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+    deploy:
+      resources:
+        limits: { cpus: "2.0", memory: 512M }
+    stop_grace_period: 20s
+    restart: unless-stopped
+
+  worker:
+    <<: *imagen
+    command: ["/app/worker", "-espera", "5s", "-gracia", "15s"]
+    environment:
+      COORDINADOR_URL: "http://coordinador:8080"
+    depends_on:
+      coordinador: { condition: service_healthy }
+    deploy:
+      replicas: 2
+      resources:
+        limits: { cpus: "1.0", memory: 256M }
+    stop_grace_period: 20s      # un poco más que -gracia, para que el apagado ordenado termine
+    restart: unless-stopped
+
+  loadgen:
+    <<: *imagen
+    profiles: ["carga"]
+    command: ["/app/loadgen", "-n", "1000", "-tipo", "hash", "-payload", "{\"rondas\":300000}", "-mix", "-concurrencia", "64"]
+    environment:
+      COORDINADOR_URL: "http://coordinador:8080"
+    depends_on:
+      coordinador: { condition: service_healthy }
+    restart: "no"
