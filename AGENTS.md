@@ -4,7 +4,7 @@ Curso autodidacta de **Concurrencia y Paralelismo en Go 1.26**, en español. Cad
 
 ## Estado actual
 
-Los módulos **01 a 15 y el proyecto final (`proyecto-final/`) están implementados**, cada módulo con `README.md` de módulo y `README.md` por ejercicio.
+Los módulos **01 a 15, `casos-de-uso/` y el proyecto final (`proyecto-final/`) están implementados**, cada módulo con `README.md` de módulo y `README.md` por ejercicio.
 
 | Módulos | Tema |
 |--|--|
@@ -103,3 +103,13 @@ cd 15-diseno-avanzado/07-skiplist && go run .      # cada ejercicio es `package 
 - **Trampa de GOMAXPROCS:** con `cpus: 1.0` Go fija `GOMAXPROCS=2` (el mínimo del runtime), no 1.
 - Escalado medido con `./scripts/escalado.sh`; deja `docker compose down` al terminar.
 - No cambies cifras del README sin volver a ejecutar el experimento correspondiente.
+
+## Casos de uso por concepto (`casos-de-uso/`)
+
+Guía **transversal**: los módulos están ordenados por feature de Go; esta carpeta, por **problema**, para enseñar *qué feature usar y cuándo*. 7 conceptos × (básico, intermedio, avanzado) = 19 casos con código + 1 caso solo documental (7.2, apunta a `proyecto-final/`).
+
+- Estructura: `casos-de-uso/NN-concepto/N-nivel-nombre/{main.go,main_test.go,README.md}` + un `README.md` por concepto + el índice `casos-de-uso/README.md` (mapa, árbol de decisión, tabla «feature → cuándo sí/no», ruta de estudio, errores comunes).
+- Cada README de caso sigue la plantilla: Problema → Qué features usa y por qué → ¿Cuándo usarlo? ¿Cuándo no? → Cómo ejecutarlo → Qué observar (salida real) → Errores típicos → Profundiza en el curso (enlaces relativos a los módulos) → Prueba tú.
+- Los enlaces a módulos son relativos (`../../../NN-modulo/ejercicio`): si renombras una carpeta de módulo, hay que actualizarlos. Comprobación rápida: un script que recorra los `README.md` y verifique que cada enlace relativo existe (así se validó: 0 rotos).
+- Al añadir un caso: código + test (`-race`, `synctest` si hay tiempo, `goleak` si hay goroutines de larga vida), salida real pegada en el README, fila en el mapa y, si introduce una feature nueva, en la tabla «feature → cuándo».
+- Lecciones de esta carpeta: un test `synctest` falla con «main bubble goroutine has exited but blocked goroutines remain» si una función deja goroutines vivas (haz que esperen a terminar, p. ej. con un canal `fin`); quien crea la fuente de un pipeline debe poder detenerla (`ctx`).
