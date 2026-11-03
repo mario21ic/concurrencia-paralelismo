@@ -1,5 +1,6 @@
-# Solo lo necesario para construir proyecto-final (el contexto es la raíz porque go.mod está aquí).
+# Solo lo necesario para construir proyecto-final y casos-de-uso/07-io-vs-cpu/3-avanzado-compose-escalado (el contexto es la raíz porque go.mod está aquí).
 *
 !go.mod
 !go.sum
 !proyecto-final
+!casos-de-uso/07-io-vs-cpu/3-avanzado-compose-escalado

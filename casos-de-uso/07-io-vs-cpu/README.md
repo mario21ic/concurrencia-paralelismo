@@ -9,7 +9,8 @@ Esta es la decisión práctica que cierra el bloque de paralelismo: el número d
 | Nivel | Caso | Idea | Feature principal |
 |--|--|--|--|
 | 1 · básico | [1-basico-cuantos-workers](./1-basico-cuantos-workers) | 256 tareas de E/S y de CPU con 1…256 workers | pool de workers |
-| 2 · avanzado | [2-avanzado-contenedores](./2-avanzado-contenedores) | escalar con Docker Compose: speedup 7.36× con 8 contenedores | `proyecto-final` |
+| 2 · avanzado | [2-avanzado-contenedores](./2-avanzado-contenedores) | por qué y cuándo salir del proceso; speedup 7.36× con 8 contenedores | `proyecto-final` |
+| 3 · avanzado | [3-avanzado-compose-escalado](./3-avanzado-compose-escalado) | **ejecutable**: `docker compose --scale worker=N` y un cliente que mide el speedup | Compose, balanceo en el cliente |
 
 ## Cómo elegir
 

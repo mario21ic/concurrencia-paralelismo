@@ -42,6 +42,8 @@ Repartir en **procesos** da un speedup casi lineal porque cada worker tiene su p
 
 ## Pruébalo
 
+**Versión pequeña** (solo workers y un cliente, ≈ 1 min): [caso 7.3](../3-avanzado-compose-escalado), con `./scripts/escalar.sh`. **Versión completa** (cola, arriendos, tolerancia a fallos):
+
 ```bash
 cd ../../../proyecto-final
 docker compose up -d --build

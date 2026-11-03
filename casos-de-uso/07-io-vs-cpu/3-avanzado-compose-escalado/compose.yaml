@@ -1,0 +1,44 @@
+# N workers (réplicas) + un cliente que reparte la carga entre ellos.
+#
+#   docker compose up -d --build --wait worker          # 1 worker
+#   docker compose up -d --scale worker=4 --wait worker # escalar a 4
+#   docker compose run --rm --no-deps cliente           # lanzar la carga (perfil "carga")
+#   docker compose down
+#
+# Cada worker tiene un límite de 1 CPU, así que el paralelismo viene de AÑADIR contenedores. Los
+# parámetros de la carga se cambian con variables: TAREAS, ITER, CONC y SERIAL (fracción serial, caso 8.4).
+name: casos-escalado
+
+x-imagen: &imagen
+  build:
+    context: ../../..
+    dockerfile: casos-de-uso/07-io-vs-cpu/3-avanzado-compose-escalado/Dockerfile
+  image: casos-escalado:latest
+
+services:
+  worker:
+    <<: *imagen
+    command: ["/app/escalado", "-modo=servidor", "-addr=:8080"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/salud"]
+      interval: 1s
+      timeout: 2s
+      retries: 20
+    deploy:
+      resources:
+        limits: { cpus: "1.0", memory: 128M }
+
+  cliente:
+    <<: *imagen
+    profiles: ["carga"]
+    command:
+      - /app/escalado
+      - -modo=cliente
+      - -url=http://worker:8080
+      - -tareas=${TAREAS:-800}
+      - -iter=${ITER:-10000000}
+      - -conc=${CONC:-64}
+      - -serial=${SERIAL:-0}
+    deploy:
+      resources:
+        limits: { cpus: "2.0", memory: 256M }

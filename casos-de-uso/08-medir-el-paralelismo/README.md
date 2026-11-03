@@ -11,6 +11,7 @@ El concepto 6 enseña a *repartir* un cálculo. Este enseña a **medirlo y expli
 | 1 · básico | [1-basico-speedup](./1-basico-speedup) | 256 bloques de CPU pura con 1…32 workers, y las mismas goroutines con `GOMAXPROCS=1` | aceleración, eficiencia, y la diferencia entre **concurrencia y paralelismo** |
 | 2 · intermedio | [2-intermedio-amdahl](./2-intermedio-amdahl) | tareas con 0 %, 5 %, 25 % y 50 % de trabajo serial | la **ley de Amdahl**: lo medido frente a lo predicho |
 | 3 · avanzado | [3-avanzado-memoria-y-cache](./3-avanzado-memoria-y-cache) | tres trabajos «paralelos» con curvas de escalado muy distintas | **false sharing** y **ancho de banda de memoria** como techo |
+| 4 · avanzado | [4-avanzado-amdahl-contenedores](./4-avanzado-amdahl-contenedores) | la misma ley, con **Docker Compose**: la parte serial vive en el cliente | Amdahl entre procesos |
 
 ## Cómo elegir (diagnóstico de un paralelismo que no escala)
 

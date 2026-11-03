@@ -27,8 +27,8 @@ go test -race -v .  # comprobaciones (muchas con tiempo virtual: testing/synctes
 | 4 | [Tiempo y cancelación](04-tiempo-y-cancelacion) | ¿cómo evito esperar para siempre, reintento y apago? | concurrencia | [timeout](04-tiempo-y-cancelacion/1-basico-timeout) | [reintentos](04-tiempo-y-cancelacion/2-intermedio-reintentos) | [apagado ordenado](04-tiempo-y-cancelacion/3-avanzado-apagado-ordenado) |
 | 5 | [Limitar recursos](05-limitar-recursos) | ¿cómo acoto concurrencia, cola y tasa? | concurrencia | [semáforo](05-limitar-recursos/1-basico-semaforo) | [worker pool](05-limitar-recursos/2-intermedio-worker-pool) | [rate limit](05-limitar-recursos/3-avanzado-rate-limit) |
 | 6 | [Paralelismo de CPU](06-paralelismo-cpu) | ¿cómo uso todos los núcleos (y cuándo no compensa)? | **paralelismo** | [suma paralela](06-paralelismo-cpu/1-basico-suma-paralela) | [map-reduce](06-paralelismo-cpu/2-intermedio-map-reduce) | [merge sort](06-paralelismo-cpu/3-avanzado-merge-sort) |
-| 7 | [E/S frente a CPU](07-io-vs-cpu) | ¿cuántos workers? ¿cuándo salgo del proceso? | **paralelismo** | [cuántos workers](07-io-vs-cpu/1-basico-cuantos-workers) | — | [contenedores](07-io-vs-cpu/2-avanzado-contenedores) |
-| 8 | [Medir el paralelismo](08-medir-el-paralelismo) | ¿cuánto acelera de verdad y qué me lo impide? | **paralelismo** | [speedup](08-medir-el-paralelismo/1-basico-speedup) | [Amdahl](08-medir-el-paralelismo/2-intermedio-amdahl) | [memoria y caché](08-medir-el-paralelismo/3-avanzado-memoria-y-cache) |
+| 7 | [E/S frente a CPU](07-io-vs-cpu) | ¿cuántos workers? ¿cuándo salgo del proceso? | **paralelismo** | [cuántos workers](07-io-vs-cpu/1-basico-cuantos-workers) | — [contenedores](07-io-vs-cpu/2-avanzado-contenedores) · [**Compose en vivo**](07-io-vs-cpu/3-avanzado-compose-escalado) |
+| 8 | [Medir el paralelismo](08-medir-el-paralelismo) | ¿cuánto acelera de verdad y qué me lo impide? | **paralelismo** | [speedup](08-medir-el-paralelismo/1-basico-speedup) | [Amdahl](08-medir-el-paralelismo/2-intermedio-amdahl) | [memoria y caché](08-medir-el-paralelismo/3-avanzado-memoria-y-cache) · [Amdahl en contenedores](08-medir-el-paralelismo/4-avanzado-amdahl-contenedores) |
 | 9 | [Repartir el trabajo](09-repartir-el-trabajo) | ¿cómo divido el cálculo para que todos acaben a la vez? | **paralelismo** | [matrices](09-repartir-el-trabajo/1-basico-matrices) | [carga desigual](09-repartir-el-trabajo/2-intermedio-carga-desigual) | [suma de prefijos](09-repartir-el-trabajo/3-avanzado-prefix-sum) |
 | 10 | [Simulaciones por fases](10-simulaciones-por-fases) | ¿cómo paralelizo un cálculo que avanza paso a paso? | **paralelismo** | [Monte Carlo](10-simulaciones-por-fases/1-basico-montecarlo) | [Juego de la Vida](10-simulaciones-por-fases/2-intermedio-juego-de-la-vida) | [N cuerpos](10-simulaciones-por-fases/3-avanzado-n-cuerpos) |
 
@@ -93,7 +93,7 @@ Y los tres **tipos** de paralelismo que aparecen: de **datos** (mismo cálculo s
      ├─ cada elemento depende del anterior .................. escaneo en 3 fases ....... caso 9.3
      ├─ muestras aleatorias independientes .................. generador por worker ..... caso 10.1
      ├─ avanza por pasos (mallas, físicas) .................. doble búfer + barrera .... caso 10.2 / 10.3
-     └─ ya no cabe en una máquina ........................... contenedores ............. caso 7.2
+     └─ ya no cabe en una máquina ........................... contenedores (Compose) ... caso 7.2 / 7.3 / 8.4
 ```
 
 ## Features de Go: cuándo usarlas y cuándo no
@@ -144,7 +144,7 @@ Intercalando esta carpeta con los módulos (el módulo da la *herramienta*; el c
 | 9 | [14-internals](../14-internals) | revisa 7.1 con lo que sabes de G-M-P y del netpoller |
 | 10 | [15-diseno-avanzado](../15-diseno-avanzado) | 1.3, 4.3, 5.3 |
 | 11 | repaso de paralelismo | **9.1, 9.2, 9.3, 10.1, 10.2, 10.3** (reparto del trabajo y simulaciones por fases) |
-| 12 | [proyecto-final](../proyecto-final) | 7.2 y todo junto |
+| 12 | [proyecto-final](../proyecto-final) (necesita Docker) | 7.2, **7.3, 8.4** (paralelismo entre contenedores con Compose) y todo junto |
 
 ## Los errores más comunes (y dónde se ven)
 
