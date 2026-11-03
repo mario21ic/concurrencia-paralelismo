@@ -22,3 +22,7 @@ Hasta aquí la concurrencia servía para **solapar esperas**. El **paralelismo**
 | tareas muy pequeñas | agrúpalas en **lotes**; el coste de coordinar puede superar al trabajo |
 | con una parte secuencial grande | **Amdahl**: el speedup máximo es `1/(1−p)` |
 | ya no cabe en una máquina | repartir en **procesos/contenedores** (caso 7.2) |
+
+## Sigue con
+
+Estos tres casos enseñan a *repartir*. Para **medir** si compensa (speedup, Amdahl, memoria) ve al [concepto 8](../08-medir-el-paralelismo); para **repartir mejor** (carga desigual, escaneo) al [concepto 9](../09-repartir-el-trabajo); y para cálculos que avanzan **por pasos** al [concepto 10](../10-simulaciones-por-fases).

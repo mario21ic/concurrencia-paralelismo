@@ -13,7 +13,7 @@ Curso autodidacta de nivel básico a avanzado. Cada módulo incluye objetivos, t
 ├── README.md
 ├── AGENTS.md                  # guía para trabajar en el repo (convenciones, trampas, estado)
 ├── 01-fundamentos/ … 15-diseno-avanzado/   # un módulo por carpeta (por FEATURE del lenguaje), cada ejercicio con su README
-├── casos-de-uso/              # los mismos temas ordenados por PROBLEMA, de básico a avanzado (qué feature usar y cuándo)
+├── casos-de-uso/              # los mismos temas ordenados por PROBLEMA, de básico a avanzado (qué feature usar y cuándo): 5 conceptos de concurrencia + 5 de paralelismo
 └── proyecto-final/            # jobq: cola de trabajos distribuida (Docker Compose)
 ```
 

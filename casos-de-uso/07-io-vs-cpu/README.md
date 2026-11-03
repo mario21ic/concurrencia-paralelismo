@@ -19,3 +19,7 @@ Esta es la decisión práctica que cierra el bloque de paralelismo: el número d
 | **E/S** (red, disco, BD) | muchos (cientos o miles) | limitado por el **recurso remoto**: usa un semáforo (5.1) y límites de tasa (5.3) |
 | **memoria / ancho de banda** | 2-4 | trocea en bloques que quepan en caché; datos más compactos |
 | **un lock** | menos | elimina el estado compartido (concepto 2) |
+
+## Sigue con
+
+Si tu trabajo es CPU, el [concepto 8](../08-medir-el-paralelismo) explica cuánto debes esperar de añadir núcleos (speedup y ley de Amdahl) y el [concepto 9](../09-repartir-el-trabajo), cómo repartirlo bien.
